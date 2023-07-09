@@ -7,10 +7,7 @@ class vec3 {
         vec3();
         vec3(float x, float y, float z);
         vec3(const vec3& other);
-        vec3 operator+(const vec3& other);
         vec3& operator+=(const vec3& other);
-        vec3 operator-(const vec3& other);
-        vec3 operator*(const float c);
         vec3& operator*=(const float c);
         vec3& operator/=(const float c);
         float x() const;
@@ -21,6 +18,10 @@ class vec3 {
 };
 
 std::ostream& operator<<(std::ostream& os, const vec3& v);
+vec3 operator+(const vec3& a, const vec3& b);
+vec3 operator-(const vec3& a, const vec3& b);
+vec3 operator*(const vec3& a, float c);
+vec3 operator/(const vec3& a, float c);
 
 using point3 = vec3;
 using color = vec3;

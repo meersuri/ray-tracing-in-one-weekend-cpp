@@ -15,20 +15,24 @@ float vec3::y() const { return e[1]; }
 
 float vec3::z() const { return e[2]; }
 
-float vec3::length() const { return sqrt(e[0]*e[0] + e[1]*e[1] + e[2]*e[2]); }
+float vec3::length() const { return sqrt(length_squared()); }
 
 float vec3::length_squared() const { return (e[0]*e[0] + e[1]*e[1] + e[2]*e[2]); }
 
-vec3 vec3::operator+(const vec3& other) { 
-    return vec3(e[0] + other.x(), e[1] + other.y(), e[2] + other.z());
+vec3 operator+(const vec3& a, const vec3& b) { 
+    return vec3(a.x() + b.x(), a.y() + b.y(), a.z() + b.z());
 }
 
-vec3 vec3::operator-(const vec3& other) { 
-    return vec3(e[0] - other.x(), e[1] - other.y(), e[2] - other.z());
+vec3 operator-(const vec3& a, const vec3& b) { 
+    return vec3(a.x() - b.x(), a.y() - b.y(), a.z() - b.z());
 }
 
-vec3 vec3::operator*(const float c) { 
-    return vec3(e[0]*c, e[1]*c, e[2]*c);
+vec3 operator*(const vec3& a, const float c) { 
+    return vec3(a.x()*c, a.y()*c, a.z()*c);
+}
+
+vec3 operator/(const vec3& a, const float c) { 
+    return vec3(a.x()/c, a.y()/c, a.z()/c);
 }
 
 vec3& vec3::operator+=(const vec3& other) { 
