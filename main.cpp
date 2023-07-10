@@ -12,5 +12,8 @@ int main() {
     std::cout << a*3;
     a /= 3;
     std::cout << a;
+    std::cout << cross(a, a);
+    std::cout << dot(a, a);
+    std::cout << '\n';
     return 0;
 }
