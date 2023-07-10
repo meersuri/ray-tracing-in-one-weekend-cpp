@@ -22,6 +22,9 @@ vec3 operator+(const vec3& a, const vec3& b);
 vec3 operator-(const vec3& a, const vec3& b);
 vec3 operator*(const vec3& a, float c);
 vec3 operator/(const vec3& a, float c);
+float dot(const vec3& a, const vec3& b);
+vec3 cross(const vec3& a, const vec3& b);
+vec3 unit_vector(vec3 v);
 
 using point3 = vec3;
 using color = vec3;
