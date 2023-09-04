@@ -1,7 +1,7 @@
 #include<cmath>
 #include<iostream>
 
-#include "vec3.hpp"
+#include "vec3.h"
 
 vec3::vec3(): e{0, 0, 0} {}
 

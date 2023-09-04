@@ -1,8 +1,8 @@
 #include<iostream>
 #include<fstream>
 
-#include "vec3.hpp"
-#include "color.hpp"
+#include "vec3.h"
+#include "color.h"
 
 int main(int argc, char *argv[]) {
     const int height = 256;
