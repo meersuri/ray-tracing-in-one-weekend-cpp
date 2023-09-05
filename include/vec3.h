@@ -2,11 +2,9 @@
 #define VEC3_HPP
 
 class vec3 {
-    float e[3];
     public:
-        vec3();
-        vec3(float x, float y, float z);
-        vec3(const vec3& other);
+        vec3() = default;
+        vec3(float x, float y, float z): e_{x, y, z} {};
         vec3& operator+=(const vec3& other);
         vec3& operator*=(const float c);
         vec3& operator/=(const float c);
@@ -15,6 +13,8 @@ class vec3 {
         float z() const;
         float length() const;
         float length_squared() const;
+    private:
+        float e_[3];
 };
 
 std::ostream& operator<<(std::ostream& os, const vec3& v);
