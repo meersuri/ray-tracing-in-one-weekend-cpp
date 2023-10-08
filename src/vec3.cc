@@ -3,15 +3,15 @@
 
 #include "vec3.h"
 
-float vec3::x() const { return e_[0]; }
+double vec3::x() const { return e_[0]; }
 
-float vec3::y() const { return e_[1]; }
+double vec3::y() const { return e_[1]; }
 
-float vec3::z() const { return e_[2]; }
+double vec3::z() const { return e_[2]; }
 
-float vec3::length() const { return sqrt(length_squared()); }
+double vec3::length() const { return sqrt(length_squared()); }
 
-float vec3::length_squared() const { return (e_[0]*e_[0] + e_[1]*e_[1] + e_[2]*e_[2]); }
+double vec3::length_squared() const { return (e_[0]*e_[0] + e_[1]*e_[1] + e_[2]*e_[2]); }
 
 vec3 operator+(const vec3& a, const vec3& b) { 
     return vec3(a.x() + b.x(), a.y() + b.y(), a.z() + b.z());
@@ -21,11 +21,11 @@ vec3 operator-(const vec3& a, const vec3& b) {
     return vec3(a.x() - b.x(), a.y() - b.y(), a.z() - b.z());
 }
 
-vec3 operator*(const vec3& a, const float c) { 
+vec3 operator*(const vec3& a, const double c) { 
     return vec3(a.x()*c, a.y()*c, a.z()*c);
 }
 
-vec3 operator/(const vec3& a, const float c) { 
+vec3 operator/(const vec3& a, const double c) { 
     return vec3(a.x()/c, a.y()/c, a.z()/c);
 }
 
@@ -35,19 +35,19 @@ vec3& vec3::operator+=(const vec3& other) {
     e_[2] += other.z();
     return *this;
 }
-vec3& vec3::operator*=(const float c) { 
+vec3& vec3::operator*=(const double c) { 
     e_[0] *= c;
     e_[1] *= c;
     e_[2] *= c;
     return *this;
 }
 
-vec3& vec3::operator/=(const float c) { 
+vec3& vec3::operator/=(const double c) { 
     *this *= (1/c);
     return *this;
 }
 
-float dot(const vec3& a, const vec3& b) {
+double dot(const vec3& a, const vec3& b) {
     return a.x()*b.x() + a.y()*b.y() + a.z()*b.z();
 }
 

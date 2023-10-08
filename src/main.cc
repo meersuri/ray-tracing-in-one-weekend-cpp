@@ -9,8 +9,9 @@ int main(int argc, char *argv[]) {
     const int width = 256;
     std::cout << "P3\n" << width << " " << height << "\n255\n";
     for (int row = 0; row < height; row++) {
+        std::clog << "Scan lines remaining: " << (height - row) << std::endl;
         for (int col = 0; col < width; col++) {
-            color pixel_color(float((row + 1))/height, float((col + 1))/width, 128/255.0);
+            color pixel_color(double((row + 1))/height, double((col + 1))/width, 128/255.0);
             write_color(std::cout, pixel_color);
         }
     }
