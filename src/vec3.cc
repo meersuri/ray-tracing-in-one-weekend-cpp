@@ -25,6 +25,10 @@ vec3 operator*(const vec3& a, const double c) {
     return vec3(a.x()*c, a.y()*c, a.z()*c);
 }
 
+vec3 operator*(const double c, const vec3& a) { 
+    return vec3(a.x()*c, a.y()*c, a.z()*c);
+}
+
 vec3 operator/(const vec3& a, const double c) { 
     return vec3(a.x()/c, a.y()/c, a.z()/c);
 }

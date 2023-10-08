@@ -23,6 +23,7 @@ std::ostream& operator<<(std::ostream& os, const vec3& v);
 vec3 operator+(const vec3& a, const vec3& b);
 vec3 operator-(const vec3& a, const vec3& b);
 vec3 operator*(const vec3& a, double c);
+vec3 operator*(double c, const vec3& a);
 vec3 operator/(const vec3& a, double c);
 double dot(const vec3& a, const vec3& b);
 vec3 cross(const vec3& a, const vec3& b);
