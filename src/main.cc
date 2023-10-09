@@ -5,8 +5,20 @@
 #include "color.h"
 #include "ray.h"
 
+bool hit_sphere(const point3& center, double radius, const ray& r) {
+    vec3 oc = r.origin() - center;
+    auto a = dot(r.direction(), r.direction());
+    auto b = 2.0*dot(oc, r.direction());
+    auto c = dot(oc, oc) - radius*radius;
+    auto discriminant = b*b - 4*a*c;
+    return (discriminant >= 0);
+}
+
 color ray_color(const ray& ray) {
     auto unit_dir = unit_vector(ray.direction());
+    if (hit_sphere(point3(0, 0, -1), 0.5, ray)) {
+        return color(1, 0, 0);
+    }
     auto a = 0.5*(unit_dir.y() + 1.0);
     return (1.0 - a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
 }
@@ -30,11 +42,11 @@ int main(int argc, char *argv[]) {
     auto viewport_upper_left = camera_center - vec3(0, 0, focal_length) - viewport_u/2 - viewport_v/2;
     auto pixel00_loc = viewport_upper_left + pixel_delta_u/2.0 + pixel_delta_v/2.0;
 
-    std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
+    std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
     for (int row = 0; row < image_height; row++) {
         std::clog << "Scan lines remaining: " << (image_height - row) << std::endl;
         for (int col = 0; col < image_width; col++) {
-            auto pixel_center = pixel00_loc + (pixel_delta_v*row) + (pixel_delta_u*col);
+            auto pixel_center = pixel00_loc + (row*pixel_delta_v) + (col*pixel_delta_u);
             auto ray_direction = pixel_center - camera_center;
             ray r(camera_center, ray_direction);
             color pixel_color = ray_color(r);
