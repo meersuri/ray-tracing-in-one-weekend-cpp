@@ -5,24 +5,15 @@
 #include "vec3.h"
 #include "color.h"
 #include "ray.h"
+#include "hittable_list.h"
+#include "sphere.h"
+#include "utils.h"
 
-double hit_sphere(const point3& center, double radius, const ray& r) {
-    vec3 oc = r.origin() - center;
-    auto a = r.direction().length_squared();
-    auto half_b = dot(oc, r.direction());
-    auto c = oc.length_squared() - radius*radius;
-    auto discriminant = (half_b*half_b - a*c);
-    if (discriminant < 0) {
-        return -1.0;
-    }
-    return (-half_b - sqrt(discriminant)) / a;
-}
-
-color ray_color(const ray& ray) {
+color ray_color(const ray& ray, const hittable_list& world) {
     auto unit_dir = unit_vector(ray.direction());
-    auto t = hit_sphere(point3(0, 0, -1), 0.5, ray);
-    if (t > 0.0 ) {
-        vec3 N = unit_vector(ray.at(t) - vec3(0, 0, -1));
+    hit_record rec;
+    if (world.hit(ray, 0, infinity, rec)) {
+        vec3 N = rec.normal;
         return 0.5*color(N.x() + 1, N.y() + 1, N.z() + 1);
     }
     auto a = 0.5*(unit_dir.y() + 1.0);
@@ -48,6 +39,9 @@ int main(int argc, char *argv[]) {
     auto viewport_upper_left = camera_center - vec3(0, 0, focal_length) - viewport_u/2 - viewport_v/2;
     auto pixel00_loc = viewport_upper_left + pixel_delta_u/2.0 + pixel_delta_v/2.0;
 
+    auto world = hittable_list(make_shared<sphere>(point3(0,0,-1), 0.5));
+    world.add(make_shared<sphere>(point3(0,-100.5,-1), 100));
+
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
     for (int row = 0; row < image_height; row++) {
         std::clog << "Scan lines remaining: " << (image_height - row) << std::endl;
@@ -55,7 +49,7 @@ int main(int argc, char *argv[]) {
             auto pixel_center = pixel00_loc + (row*pixel_delta_v) + (col*pixel_delta_u);
             auto ray_direction = pixel_center - camera_center;
             ray r(camera_center, ray_direction);
-            color pixel_color = ray_color(r);
+            color pixel_color = ray_color(r, world);
             write_color(std::cout, pixel_color);
         }
     }
