@@ -8,11 +8,12 @@
 #include "hittable_list.h"
 #include "sphere.h"
 #include "utils.h"
+#include "interval.h"
 
 color ray_color(const ray& ray, const hittable_list& world) {
     auto unit_dir = unit_vector(ray.direction());
     hit_record rec;
-    if (world.hit(ray, 0, infinity, rec)) {
+    if (world.hit(ray, interval(0, +infinity), rec)) {
         return 0.5*(rec.normal + color(1,1,1));
     }
     auto a = 0.5*(unit_dir.y() + 1.0);
