@@ -20,12 +20,10 @@ class hittable_list: public hittable {
             double closest_hit = ray_tmax;
             hit_record temp;
             for (const auto& obj: m_objects) {
-                if (obj->hit(r, ray_tmin, ray_tmax, temp)) {
+                if (obj->hit(r, ray_tmin, closest_hit, temp)) {
                     hit_anything = true;
-                    if (temp.t < closest_hit) {
-                        closest_hit = temp.t;
-                        rec = temp;
-                    }
+                    closest_hit = temp.t;
+                    rec = temp;
                 }
             }
             return hit_anything;

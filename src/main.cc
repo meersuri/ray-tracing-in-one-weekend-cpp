@@ -13,8 +13,7 @@ color ray_color(const ray& ray, const hittable_list& world) {
     auto unit_dir = unit_vector(ray.direction());
     hit_record rec;
     if (world.hit(ray, 0, infinity, rec)) {
-        vec3 N = rec.normal;
-        return 0.5*color(N.x() + 1, N.y() + 1, N.z() + 1);
+        return 0.5*(rec.normal + color(1,1,1));
     }
     auto a = 0.5*(unit_dir.y() + 1.0);
     return (1.0 - a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
