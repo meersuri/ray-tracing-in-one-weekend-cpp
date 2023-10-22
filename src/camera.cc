@@ -3,8 +3,8 @@
 #include "color.h"
 #include "vec3.h"
 
-camera::camera(int image_width, double aspect_ratio, int samples): m_image_width(image_width),
-    m_aspect_ratio(aspect_ratio), m_samples(samples) {
+camera::camera(int image_width, double aspect_ratio, int samples, int max_depth): m_image_width(image_width),
+    m_aspect_ratio(aspect_ratio), m_samples(samples), m_max_depth(max_depth) {
     m_image_height = static_cast<int>(m_image_width/m_aspect_ratio);
     m_image_height = m_image_height > 1 ? m_image_height : 1;
     m_viewport_width = m_viewport_height*(static_cast<double>(m_image_width)/m_image_height);
@@ -28,12 +28,15 @@ point3 camera::pixel_sample_square() const {
     return px + py;
 }
 
-color camera::ray_color(const ray& r, const hittable& world) const {
+color camera::ray_color(const ray& r, int rem_depth, const hittable& world) const {
+    if (rem_depth == 0) {
+        return color(0,0,0);
+    }
     auto unit_dir = unit_vector(r.direction());
     hit_record rec;
     if (world.hit(r, interval(0, +infinity), rec)) {
         auto reflection = random_on_hemisphere(rec.normal);
-        return 0.5 * ray_color(ray(rec.p, reflection), world);
+        return 0.5 * ray_color(ray(rec.p, reflection), rem_depth - 1, world);
     }
     auto a = 0.5*(unit_dir.y() + 1.0);
     return (1.0 - a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
@@ -47,7 +50,7 @@ void camera::render(const hittable& world) const {
             color pixel_color(0,0,0);
             for (int s = 0; s < m_samples; s++) {
                 ray r = get_ray(row, col);
-                pixel_color += ray_color(r, world);
+                pixel_color += ray_color(r, m_max_depth, world);
             }
             write_color(std::cout, pixel_color, m_samples);
         }

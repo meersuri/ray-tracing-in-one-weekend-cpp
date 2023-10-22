@@ -8,6 +8,7 @@ class camera {
     int m_image_width;
     int m_image_height;
     int m_samples;
+    int m_max_depth;
     double m_viewport_width;
     double m_viewport_height{2.0};
     double m_aspect_ratio;
@@ -20,10 +21,10 @@ class camera {
     point3 m_viewport_upper_left;
     point3 m_pixel00_loc;
     ray get_ray(int row, int col) const;
-    color ray_color(const ray& r, const hittable& world) const;
+    color ray_color(const ray& r, int rem_depth, const hittable& world) const;
     point3 pixel_sample_square() const;
     public:
-        camera(int image_width=400, double aspect_ratio=16.0/9.0, int samples=10);
+        camera(int image_width=400, double aspect_ratio=16.0/9.0, int samples=10, int max_depth=50);
         void render(const hittable& world) const;
 
 };
