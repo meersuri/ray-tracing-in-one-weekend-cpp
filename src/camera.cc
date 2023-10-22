@@ -35,7 +35,7 @@ color camera::ray_color(const ray& r, int rem_depth, const hittable& world) cons
     auto unit_dir = unit_vector(r.direction());
     hit_record rec;
     if (world.hit(r, interval(0.001, +infinity), rec)) {
-        auto reflection = random_on_hemisphere(rec.normal);
+        auto reflection = rec.normal + random_unit_vector();
         return 0.5 * ray_color(ray(rec.p, reflection), rem_depth - 1, world);
     }
     auto a = 0.5*(unit_dir.y() + 1.0);
