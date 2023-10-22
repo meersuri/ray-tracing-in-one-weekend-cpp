@@ -2,6 +2,7 @@
 #include "hittable_list.h"
 #include "color.h"
 #include "vec3.h"
+#include "material.h"
 
 camera::camera(int image_width, double aspect_ratio, int samples, int max_depth): m_image_width(image_width),
     m_aspect_ratio(aspect_ratio), m_samples(samples), m_max_depth(max_depth) {
@@ -35,8 +36,9 @@ color camera::ray_color(const ray& r, int rem_depth, const hittable& world) cons
     auto unit_dir = unit_vector(r.direction());
     hit_record rec;
     if (world.hit(r, interval(0.001, +infinity), rec)) {
-        auto reflection = rec.normal + random_unit_vector();
-        return 0.5 * ray_color(ray(rec.p, reflection), rem_depth - 1, world);
+        color attenuation;
+        ray scattered = rec.mat->scatter(r, rec, attenuation);
+        return attenuation * ray_color(scattered, rem_depth - 1, world);
     }
     auto a = 0.5*(unit_dir.y() + 1.0);
     return (1.0 - a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);

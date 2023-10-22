@@ -17,6 +17,7 @@ class vec3 {
         double z() const;
         double length() const;
         double length_squared() const;
+        bool near_zero() const;
         static vec3 random() { return vec3(random_double(), random_double(), random_double()); }
         static vec3 random(double min, double max) { return vec3(random_double(min, max), random_double(min, max), random_double(min, max)); }
     private:
@@ -29,6 +30,7 @@ vec3 operator-(const vec3& a, const vec3& b);
 vec3 operator-(const vec3& a);
 vec3 operator*(const vec3& a, double c);
 vec3 operator*(double c, const vec3& a);
+vec3 operator*(const vec3& a, const vec3& c);
 vec3 operator/(const vec3& a, double c);
 double dot(const vec3& a, const vec3& b);
 vec3 cross(const vec3& a, const vec3& b);

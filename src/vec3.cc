@@ -29,8 +29,12 @@ vec3 operator*(const vec3& a, const double c) {
     return vec3(a.x()*c, a.y()*c, a.z()*c);
 }
 
-vec3 operator*(const double c, const vec3& a) { 
+vec3 operator*(const double c, const vec3& a) {
     return vec3(a.x()*c, a.y()*c, a.z()*c);
+}
+
+vec3 operator*(const vec3& a, const vec3& b) {
+    return vec3(a.x()*b.x(), a.y()*b.y(), a.z()*b.z());
 }
 
 vec3 operator/(const vec3& a, const double c) { 
@@ -94,4 +98,9 @@ vec3 random_unit_vector() {
 vec3 random_on_hemisphere(const vec3& normal) {
     auto unit = random_unit_vector();
     return dot(unit, normal) > 0.0 ? unit: -unit;
+}
+
+bool vec3::near_zero() const {
+    double s = 1e-8;
+    return (fabs(e_[0]) < s) && (fabs(e_[1]) < s) && (fabs(e_[2]) < s);
 }
