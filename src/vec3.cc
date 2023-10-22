@@ -77,3 +77,21 @@ std::ostream& operator<<(std::ostream& os, const vec3& v) {
     os << "<" << v.x() << "," << v.y() << "," << v.z() << ">\n";
     return os;
 }
+
+vec3 random_in_unit_sphere() {
+    while (true) {
+        vec3 v = vec3::random(-1, 1);
+        if (v.length_squared() <= 1) {
+            return v;
+        }
+    }
+}
+
+vec3 random_unit_vector() {
+    return unit_vector(random_in_unit_sphere());
+}
+
+vec3 random_in_unit_hemisphere(const vec3& normal) {
+    auto unit = random_unit_vector();
+    return dot(unit, normal) > 0.0 ? unit: -unit;
+}

@@ -23,9 +23,6 @@ inline double random_double(double min, double max) {
     return (max - min) * random_double() + min;
 }
 
-#include "ray.h"
-#include "vec3.h"
-
 #endif
 
 
