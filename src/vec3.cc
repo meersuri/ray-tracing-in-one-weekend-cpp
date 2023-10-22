@@ -91,7 +91,7 @@ vec3 random_unit_vector() {
     return unit_vector(random_in_unit_sphere());
 }
 
-vec3 random_in_unit_hemisphere(const vec3& normal) {
+vec3 random_on_hemisphere(const vec3& normal) {
     auto unit = random_unit_vector();
     return dot(unit, normal) > 0.0 ? unit: -unit;
 }

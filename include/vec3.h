@@ -35,7 +35,7 @@ vec3 cross(const vec3& a, const vec3& b);
 vec3 unit_vector(vec3 v);
 vec3 random_in_unit_sphere();
 vec3 random_unit_vector();
-vec3 random_in_unit_hemisphere(const vec3& normal);
+vec3 random_on_hemisphere(const vec3& normal);
 
 using point3 = vec3;
 using color = vec3;
