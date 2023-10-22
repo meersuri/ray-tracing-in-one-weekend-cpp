@@ -2,7 +2,8 @@
 #include "hittable_list.h"
 #include "color.h"
 
-camera::camera() {
+camera::camera(int image_width, double aspect_ratio, int samples): m_image_width(image_width),
+    m_aspect_ratio(aspect_ratio), m_samples(samples) {
     m_image_height = static_cast<int>(m_image_width/m_aspect_ratio);
     m_image_height = m_image_height > 1 ? m_image_height : 1;
     m_viewport_width = m_viewport_height*(static_cast<double>(m_image_width)/m_image_height);
@@ -14,8 +15,16 @@ camera::camera() {
     m_pixel00_loc = m_viewport_upper_left + m_pixel_delta_u/2.0 + m_pixel_delta_v/2.0;
 }
 
-ray camera::get_ray(point3 origin, vec3 dir) const {
-    return ray(origin, dir);
+ray camera::get_ray(int row, int col) const {
+    point3 pixel_center = m_pixel00_loc + row * m_pixel_delta_v + col * m_pixel_delta_u;
+    auto pixel_sample = pixel_center + pixel_sample_square();
+    return ray(m_center, pixel_sample - m_center);
+}
+
+point3 camera::pixel_sample_square() const {
+    auto px = -0.5 * random_double() * m_pixel_delta_u;
+    auto py = -0.5 * random_double() * m_pixel_delta_v;
+    return px + py;
 }
 
 color camera::ray_color(const ray& r, const hittable& world) const {
@@ -33,11 +42,12 @@ void camera::render(const hittable& world) const {
     for (int row = 0; row < m_image_height; row++) {
         std::clog << "Scan lines remaining: " << (m_image_height - row) << std::endl;
         for (int col = 0; col < m_image_width; col++) {
-            auto pixel_center = m_pixel00_loc + (row*m_pixel_delta_v) + (col*m_pixel_delta_u);
-            auto ray_direction = pixel_center - m_center;
-            ray r = get_ray(m_center, ray_direction);
-            color pixel_color = ray_color(r, world);
-            write_color(std::cout, pixel_color);
+            color pixel_color(0,0,0);
+            for (int s = 0; s < m_samples; s++) {
+                ray r = get_ray(row, col);
+                pixel_color += ray_color(r, world);
+            }
+            write_color(std::cout, pixel_color, m_samples);
         }
     }
 }
