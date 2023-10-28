@@ -100,6 +100,11 @@ vec3 random_on_hemisphere(const vec3& normal) {
     return dot(unit, normal) > 0.0 ? unit: -unit;
 }
 
+vec3 reflect(const vec3& v, const vec3& n) {
+    auto b = -n*dot(v, n);
+    return v + 2*b;
+}
+       
 bool vec3::near_zero() const {
     double s = 1e-8;
     return (fabs(e_[0]) < s) && (fabs(e_[1]) < s) && (fabs(e_[2]) < s);

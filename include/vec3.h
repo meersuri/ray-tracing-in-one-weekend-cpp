@@ -38,6 +38,7 @@ vec3 unit_vector(vec3 v);
 vec3 random_in_unit_sphere();
 vec3 random_unit_vector();
 vec3 random_on_hemisphere(const vec3& normal);
+vec3 reflect(const vec3& v, const vec3& n);
 
 using point3 = vec3;
 using color = vec3;
